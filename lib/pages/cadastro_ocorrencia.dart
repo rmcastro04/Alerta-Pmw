@@ -1,14 +1,13 @@
-import 'package:alerta_pmw/pages/cadastro_ocorrencia.dart';
 import 'package:flutter/material.dart';
 
-class PrinciapalPage extends StatefulWidget {
-  const PrinciapalPage({Key? key}) : super(key: key);
+class CadastrarCorrenciaPage extends StatefulWidget {
+  const CadastrarCorrenciaPage({Key? key}) : super(key: key);
 
   @override
-  State<PrinciapalPage> createState() => _PrinciapalPageState();
+  State<CadastrarCorrenciaPage> createState() => _CadastrarCorrenciaPageState();
 }
 
-class _PrinciapalPageState extends State<PrinciapalPage> {
+class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,21 +33,6 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
                   ),
                 ),
               ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.amber,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CadastrarCorrenciaPage(),
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.add,
-              color: Colors.black,
             ),
           ),
         ),

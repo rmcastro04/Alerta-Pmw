@@ -27,8 +27,8 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
             child: SingleChildScrollView(
               reverse: true,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
                   const Text(
                     "Esqueceu sua senha?",
                     style: TextStyle(
@@ -65,8 +65,7 @@ class _RecuperarSenhaPageState extends State<RecuperarSenhaPage> {
                   TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Colors.amber,
-                      minimumSize:
-                          Size(MediaQuery.of(context).size.width, 60),
+                      minimumSize: Size(MediaQuery.of(context).size.width, 60),
                     ),
                     onPressed: () {},
                     child: const SizedBox(
