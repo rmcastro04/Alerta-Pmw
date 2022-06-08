@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "967816918551",
+    "project_id": "alerta-pmw",
+    "storage_bucket": "alerta-pmw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967816918551:android:19e0d9204caf84438c0e52",
+        "android_client_info": {
+          "package_name": "com.ds.alerta_pmw.alerta_pmw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967816918551-37st0fa2kv852g0isgqmorjn6mbvv9d5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFuciOIiXBh-dh7-TSASFHVAUn_4jv4Do"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967816918551-37st0fa2kv852g0isgqmorjn6mbvv9d5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
