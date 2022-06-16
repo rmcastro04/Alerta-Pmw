@@ -14,11 +14,11 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
       child: Center(
         child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false, // retirar botão voltar.
+            toolbarHeight: 70,
             backgroundColor: Colors.black,
             title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                const SizedBox(width: 25),
                 Image.asset(
                   'assets/images/logo.png',
                   height: 30,
