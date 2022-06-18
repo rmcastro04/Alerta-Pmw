@@ -1,5 +1,7 @@
+import 'package:alerta_pmw/controllers/alerta_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../widgets/custom_drawer.dart';
@@ -12,15 +14,17 @@ class PrinciapalPage extends StatefulWidget {
 }
 
 class _PrinciapalPageState extends State<PrinciapalPage> {
-  static const __initialCameraPosition = CameraPosition(
+  /*static const __initialCameraPosition = CameraPosition(
     target: LatLng(-10.2549636, -48.3331159),
     zoom: 11.5,
-  );
+  );*/
 
   final _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AlertasController());
+
     return PageView(
       controller: _pageController,
       children: <Widget>[
@@ -49,6 +53,23 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
                   ],
                 ),
               ),
+              body: GetBuilder<AlertasController>(
+                init: controller,
+                builder: (value) => GoogleMap(
+                  /*myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: __initialCameraPosition,*/
+                  mapType: MapType.normal,
+                  zoomControlsEnabled: true,
+                  initialCameraPosition: CameraPosition(
+                    target: controller.position,
+                    zoom: 13
+                  ),
+                  onMapCreated: controller.onMapCreated,
+                  myLocationEnabled: true,
+                  markers: controller.makers,
+                ),
+              ),
               drawer: const CustomDrawer(),
             ),
           ),
@@ -58,11 +79,6 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
     /*return Scaffold(
       appBar:  AppBar(
         backgroundColor: Colors.black,
-      ),
-      body: GoogleMap(
-        myLocationButtonEnabled: false,
-        zoomControlsEnabled: false,
-        initialCameraPosition: __initialCameraPosition,
       ),
     );*/
   }

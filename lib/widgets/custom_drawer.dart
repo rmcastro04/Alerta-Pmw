@@ -1,12 +1,18 @@
+import 'package:alerta_pmw/controllers/alerta_controller.dart';
 import 'package:alerta_pmw/pages/cadastro_ocorrencia.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+    /*final controller = Get.put(AlertasController());*/
+
     return Drawer(
       child: Stack(
         children: <Widget>[
@@ -65,14 +71,18 @@ class CustomDrawer extends StatelessWidget {
                 leading: const Icon(Icons.add),
                 title: const Text('Adicionar ocorrência'),
                 onTap: () {
-                  Navigator.push(
+                  /*Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
                         return const CadastrarCorrenciaPage();
                       },
                     ),
-                  );
+                  );*/
+
+                  /*controller.watchPosicao();*/
+                  /*print("${controller.latitude.value}, ${controller.longitude.value}");*/
+
                 },
               )
             ],
