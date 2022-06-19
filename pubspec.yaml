@@ -42,6 +42,7 @@ dependencies:
   provider: ^6.0.3
   geolocator: ^7.0.3
   cloud_firestore: ^3.1.18
+  top_snackbar_flutter: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ flutter:
      - assets/images/logo.png
      - assets/images/google.png
      - assets/images/alerta_nao_validado.png
+     - assets/images/alerta_inicial.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

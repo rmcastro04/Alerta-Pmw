@@ -104,4 +104,10 @@ class AlertasController extends GetxController {
       );
     }
   }
+
+  saveMakerMap(LatLng latLng){
+    print('############################');
+    print(latLng);
+    print('############################');
+  }
 }
