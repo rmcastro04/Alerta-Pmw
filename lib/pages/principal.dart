@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-
 import '../widgets/custom_drawer.dart';
+import 'cadastro_ocorrencia.dart';
 
 class PrinciapalPage extends StatefulWidget {
   const PrinciapalPage({Key? key}) : super(key: key);
@@ -58,65 +58,70 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
                 ),
               ],
             ),
-            leading: telaAddOcorrencia ? IconButton(
-                onPressed: () {
-                  setState(() => telaAddOcorrencia = !telaAddOcorrencia);
-                  mensagem.recolherMensagem();
-                },
-                icon: Icon(Icons.arrow_back_sharp)
-            ) : null,
+            leading: telaAddOcorrencia
+                ? IconButton(
+                    onPressed: () {
+                      setState(() => telaAddOcorrencia = !telaAddOcorrencia);
+                      mensagem.recolherMensagem();
+                    },
+                    icon: const Icon(Icons.arrow_back_sharp))
+                : null,
           ),
           body: GetBuilder<AlertasController>(
             init: controller,
-            builder: (value) =>
-                GoogleMap(
-                  mapToolbarEnabled: false,
-                  /*myLocationButtonEnabled: false,
+            builder: (value) => GoogleMap(
+              mapToolbarEnabled: false,
+              /*myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,
                 initialCameraPosition: __initialCameraPosition,*/
-                  mapType: MapType.normal,
-                  zoomControlsEnabled: true,
-                  initialCameraPosition: CameraPosition(
-                      target: controller.position,
-                      zoom: 13
-                  ),
-                  onMapCreated: controller.onMapCreated,
-                  myLocationEnabled: true,
-                  markers: !telaAddOcorrencia ? controller.makers : makersTemp,
-                  onLongPress: controller.saveMakerMap,
-                  onTap: (e) {
-                    if (telaAddOcorrencia) {
-                      Marker ocorrencia = Marker(
-                        markerId: const MarkerId('ocorrencia'),
-                        infoWindow: const InfoWindow(title: 'Local da Ocorrencia'),
-                        /*icon: await BitmapDescriptor.fromAssetImage(
+              mapType: MapType.normal,
+              zoomControlsEnabled: true,
+              initialCameraPosition:
+                  CameraPosition(target: controller.position, zoom: 13),
+              onMapCreated: controller.onMapCreated,
+              myLocationEnabled: true,
+              markers: !telaAddOcorrencia ? controller.makers : makersTemp,
+              onLongPress: controller.saveMakerMap,
+              onTap: (e) {
+                if (telaAddOcorrencia) {
+                  Marker ocorrencia = Marker(
+                    markerId: const MarkerId('ocorrencia'),
+                    infoWindow: const InfoWindow(title: 'Local da Ocorrencia'),
+                    /*icon: await BitmapDescriptor.fromAssetImage(
                         ImageConfiguration(),
                     'assets/images/alerta_incial.png'),*/
-                        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-                        position: e,
-                      );
+                    icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed),
+                    position: e,
+                  );
 
-                      setState(() {
-                        makersTemp.add(ocorrencia);
-                        mostrarFloatButton = true;
-                      });
-                    }
-                  },
-                ),
+                  setState(() {
+                    makersTemp.add(ocorrencia);
+                    mostrarFloatButton = true;
+                  });
+                }
+              },
+            ),
           ),
-          drawer: !telaAddOcorrencia
-              ? CustomDrawer(mudarTela: mudarTela)
+          drawer:
+              !telaAddOcorrencia ? CustomDrawer(mudarTela: mudarTela) : null,
+          floatingActionButton: mostrarFloatButton && telaAddOcorrencia
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CadastrarCorrenciaPage(),
+                      ),
+                    );
+                  },
+                  label: const Text('Confirmar'),
+                  icon: const Icon(Icons.thumb_up),
+                  backgroundColor: Colors.amber,
+                )
               : null,
-
-          floatingActionButton: mostrarFloatButton && telaAddOcorrencia ? FloatingActionButton.extended(
-            onPressed: () {
-              // Add your onPressed code here!
-            },
-            label: const Text('Confirmar'),
-            icon: const Icon(Icons.thumb_up),
-            backgroundColor: Colors.blueAccent,
-          ): null,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
         ),
       ],
     );

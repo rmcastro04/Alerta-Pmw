@@ -43,10 +43,17 @@ dependencies:
   geolocator: ^7.0.3
   cloud_firestore: ^3.1.18
   top_snackbar_flutter: ^1.1.1
+  intl: ^0.17.0
+  localization: ^2.1.0
+  flutter_native_splash: ^2.1.6
+  flutter_launcher_icons: ^0.9.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -72,6 +79,8 @@ flutter:
      - assets/images/google.png
      - assets/images/alerta_nao_validado.png
      - assets/images/alerta_inicial.png
+     - assets/images/logo_letra_branca.png
+     - assets/images/logo_1080.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -98,3 +107,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/logo_1080.png"
+  android: true
+
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+

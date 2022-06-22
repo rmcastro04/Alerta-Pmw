@@ -4,7 +4,6 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class MensagemFloat extends GetxController {
-
   late AnimationController localAnimationController;
 
   void exibirMensagem(context) {
@@ -12,12 +11,12 @@ class MensagemFloat extends GetxController {
       context,
       const CustomSnackBar.info(
         message:
-        "There is some information. You need to do something with that",
+            "There is some information. You need to do something with that",
       ),
       additionalTopPadding: 85.0,
       persistent: true,
       onAnimationControllerInit: (controller) =>
-      localAnimationController = controller,
+          localAnimationController = controller,
       /*onTap: () {
           localAnimationController.reverse();
         }*/
@@ -27,5 +26,4 @@ class MensagemFloat extends GetxController {
   void recolherMensagem() {
     localAnimationController.reverse();
   }
-
 }

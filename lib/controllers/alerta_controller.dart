@@ -44,8 +44,7 @@ class AlertasController extends GetxController {
           position: LatLng(point.latitude, point.longitude),
           infoWindow: InfoWindow(title: alerta.get('ocorrencia')),
           icon: await BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(),
-              'assets/images/alerta_nao_validado.png'),
+              ImageConfiguration(), 'assets/images/alerta_nao_validado.png'),
           onTap: () {}),
     );
     update();
@@ -105,7 +104,7 @@ class AlertasController extends GetxController {
     }
   }
 
-  saveMakerMap(LatLng latLng){
+  saveMakerMap(LatLng latLng) {
     print('############################');
     print(latLng);
     print('############################');

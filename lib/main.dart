@@ -1,4 +1,5 @@
 import 'package:alerta_pmw/pages/auth.dart';
+import 'package:alerta_pmw/pages/cadastro_ocorrencia.dart';
 import 'package:alerta_pmw/pages/principal.dart';
 import 'package:alerta_pmw/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+///
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
