@@ -15,7 +15,7 @@ class AlertasController extends GetxController {
   late StreamSubscription<Position> positionStream;
   static const LatLng _position = LatLng(-10.2549636, -48.3331159);
   late GoogleMapController _mapsController;
-  final makers = Set<Marker>();
+  final makers = <Marker>{};
 
   static AlertasController get to => Get.find<AlertasController>();
 
@@ -43,11 +43,22 @@ class AlertasController extends GetxController {
           markerId: MarkerId(alerta.id),
           position: LatLng(point.latitude, point.longitude),
           infoWindow: InfoWindow(title: alerta.get('ocorrencia')),
-          icon: await BitmapDescriptor.fromAssetImage(
-              ImageConfiguration(), 'assets/images/alerta_nao_validado.png'),
+          icon: await iconMakers(alerta),
+          // icon: await BitmapDescriptor.fromAssetImage(
+          //     ImageConfiguration(), 'assets/images/alerta_nao_validado.png'),
           onTap: () {}),
     );
     update();
+  }
+
+  Future<BitmapDescriptor> iconMakers(alerta) async {
+    if(alerta.get('tipo_ocorrencia') == 1) {
+      return await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(), 'assets/images/makers/roubo_naoValidado_tipo_1.png');
+    }
+
+    return await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), 'assets/images/alerta_nao_validado.png');
   }
 
   watchPosicao() async {

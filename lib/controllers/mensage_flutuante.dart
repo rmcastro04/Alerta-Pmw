@@ -10,20 +10,25 @@ class MensagemFloat extends GetxController {
     showTopSnackBar(
       context,
       const CustomSnackBar.info(
+        icon: Icon(Icons.add_location_alt_outlined, color: Color(0xFF607d8b), size: 90,),
+        backgroundColor: Color(0xFF37474f),
+          textStyle: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 16),
         message:
-            "There is some information. You need to do something with that",
+            "Clique no mapa para marca o local da ocorrência",
       ),
       additionalTopPadding: 85.0,
       persistent: true,
       onAnimationControllerInit: (controller) =>
           localAnimationController = controller,
-      /*onTap: () {
-          localAnimationController.reverse();
-        }*/
     );
   }
 
-  void recolherMensagem() {
-    localAnimationController.reverse();
+  void recolherMensagem(context) {
+    print("Is dmissed ${localAnimationController.isDismissed}");
+    print("Is Completed ${localAnimationController.isCompleted}");
+
+    if(!localAnimationController.isDismissed) {
+      localAnimationController.reverse();
+    }
   }
 }

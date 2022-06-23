@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CadastrarCorrenciaPage extends StatefulWidget {
   const CadastrarCorrenciaPage({Key? key}) : super(key: key);
@@ -13,11 +14,14 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
   final _formKey = GlobalKey<FormState>();
   final dropValue = ValueNotifier('');
   final dropOpcoes = [
-    'Roubo de Veículos',
-    'Furto de Veículos',
-    'Roubo de documentos/celular/objetos',
-    'Furto de documentos/celular/objetos'
+    'Roubo',
+    'Furto',
   ];
+
+  TextEditingController titulo_controler = TextEditingController();
+  TextEditingController data_controler = TextEditingController();
+  TextEditingController hora_controler = TextEditingController();
+  TextEditingController descricao = TextEditingController();
 
   DateTime data = DateTime(2022, 12, 24);
   TimeOfDay hora = const TimeOfDay(hour: 10, minute: 30);
@@ -28,7 +32,6 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
       children: <Widget>[
         Scaffold(
           appBar: AppBar(
-            toolbarHeight: 70,
             centerTitle: true,
             backgroundColor: Colors.black,
             title: Row(
@@ -50,185 +53,265 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
               ],
             ),
           ),
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: SingleChildScrollView(
-                reverse: true,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          const Text(
-                            "ADICIONAR OCORRÊNCIA",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'BankGothic md BT Medium',
-                              fontSize: 35,
-                              fontWeight: FontWeight.w900,
-                            ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "ADICIONAR OCORRÊNCIA",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'BankGothic md BT Medium',
+                            fontSize: 35,
+                            fontWeight: FontWeight.w900,
                           ),
-                          const SizedBox(height: 40),
-                          Row(
-                            children: <Widget>[
-                              const Text(
-                                "Selecione o tipo de ocorrência",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              GestureDetector(
-                                child: const Icon(Icons.info_outline_rounded),
-                                onTap: () {
-                                  setState(() {});
-                                },
-                              ),
-                            ],
+                        ),
+
+                        const SizedBox(height: 40),
+
+                        const TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Título',
+                            border: OutlineInputBorder(),
+                            hintText: '(Ex..: Roubaram minha moto)'
                           ),
-                          ValueListenableBuilder(
-                              valueListenable: dropValue,
-                              builder: (BuildContext context, String value, _) {
-                                return SizedBox(
-                                  width: 500,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    value: (value.isEmpty) ? null : value,
-                                    onChanged: (escolha) =>
-                                        dropValue.value = escolha.toString(),
-                                    items: dropOpcoes
-                                        .map((op) => DropdownMenuItem(
-                                              value: op,
-                                              child: Text(op),
-                                            ))
-                                        .toList(),
-                                  ),
-                                );
-                              }),
-                          const SizedBox(height: 14),
-                          ElevatedButton.icon(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.white70,
-                              minimumSize:
-                                  Size(MediaQuery.of(context).size.width, 60),
-                            ),
-                            icon: const Icon(
-                              Icons.date_range,
-                              color: Colors.black,
-                            ),
-                            label: const SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                'Selecione a data da ocorrência',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        Row(
+                          children: <Widget>[
+                            const Text(
+                              "Selecione o tipo de ocorrência",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
                               ),
                             ),
-                            onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
-                                context: context,
-                                initialDate: data,
-                                firstDate: DateTime(2021),
-                                lastDate: DateTime(2023),
+                            const SizedBox(width: 10),
+                            GestureDetector(
+                              child: const Icon(Icons.info_outline_rounded),
+                              onTap: () {
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
+                        ValueListenableBuilder(
+                            valueListenable: dropValue,
+                            builder: (BuildContext context, String value, _) {
+                              return SizedBox(
+                                width: 500,
+                                child: DropdownButtonFormField<String>(
+                                  isExpanded: true,
+                                  value: (value.isEmpty) ? null : value,
+                                  onChanged: (escolha) =>
+                                      dropValue.value = escolha.toString(),
+                                  items: dropOpcoes
+                                      .map((op) => DropdownMenuItem(
+                                            value: op,
+                                            child: Text(op),
+                                          ))
+                                      .toList(),
+                                ),
                               );
-                              if (newDate == null) return;
-                              setState(() {
-                                data = newDate;
-                              });
-                            },
+                            }),
+                        const SizedBox(height: 14),
+
+                        TextField(
+                          controller: data_controler,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Digite a data da ocorrência',
+                              suffixIcon: Icon(Icons.calendar_month)
                           ),
-                          const SizedBox(height: 14),
-                          //Text('$hora'), Mostrar horas!!!
-                          ElevatedButton.icon(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.white70,
-                              minimumSize:
-                                  Size(MediaQuery.of(context).size.width, 60),
-                            ),
-                            icon: const Icon(
-                              Icons.av_timer_rounded,
-                              color: Colors.black,
-                            ),
-                            label: const SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                'Selecione a data da ocorrência',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
+                          inputFormatters: [
+                            MaskTextInputFormatter(
+                                mask: '##/##/####',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                          ],
+                          onTap: () async {
+                            DateTime? newDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2021),
+                              lastDate: DateTime(2023),
+                            );
+                            if (newDate == null) return;
+                            setState(() {
+                              data_controler.text = "${newDate.day}/${newDate.month}/${newDate.year}";
+                            });
+                          },
+                        ),
+                        // ElevatedButton.icon(
+                        //   style: TextButton.styleFrom(
+                        //     backgroundColor: Colors.white70,
+                        //     minimumSize:
+                        //         Size(MediaQuery.of(context).size.width, 60),
+                        //   ),
+                        //   icon: const Icon(
+                        //     Icons.date_range,
+                        //     color: Colors.black,
+                        //   ),
+                        //   label: const SizedBox(
+                        //     width: double.infinity,
+                        //     child: Text(
+                        //       'Selecione a data da ocorrência',
+                        //       style: TextStyle(
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.w800,
+                        //         fontSize: 18,
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   onPressed: () async {
+                        //     DateTime? newDate = await showDatePicker(
+                        //       context: context,
+                        //       initialDate: data,
+                        //       firstDate: DateTime(2021),
+                        //       lastDate: DateTime(2023),
+                        //     );
+                        //     if (newDate == null) return;
+                        //     setState(() {
+                        //       data = newDate;
+                        //     });
+                        //   },
+                        // ),
+                        const SizedBox(height: 14),
+
+                        TextField(
+                          controller: hora_controler,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Digite a hora da ocorrência',
+                              suffixIcon: Icon(Icons.av_timer_outlined)
+                          ),
+                          inputFormatters: [
+                            MaskTextInputFormatter(
+                                mask: '##:##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                          ],
+                          onTap: () async {
+                            TimeOfDay? newTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            if (newTime == null) return;
+                            setState(() {
+                              hora_controler.text = "${newTime.hour}:${newTime.minute}";
+                            });
+                          },
+                        ),
+                        //Text('$hora'), Mostrar horas!!!
+                        // ElevatedButton.icon(
+                        //   style: TextButton.styleFrom(
+                        //     backgroundColor: Colors.white70,
+                        //     minimumSize:
+                        //         Size(MediaQuery.of(context).size.width, 60),
+                        //   ),
+                        //   icon: const Icon(
+                        //     Icons.av_timer_rounded,
+                        //     color: Colors.black,
+                        //   ),
+                        //   label: const SizedBox(
+                        //     width: double.infinity,
+                        //     child: Text(
+                        //       'Selecione a data da ocorrência',
+                        //       style: TextStyle(
+                        //         color: Colors.black,
+                        //         fontWeight: FontWeight.w800,
+                        //         fontSize: 18,
+                        //       ),
+                        //     ),
+                        //   ),
+                        //   onPressed: () async {
+                        //     TimeOfDay? newTime = await showTimePicker(
+                        //       context: context,
+                        //       initialTime: hora,
+                        //     );
+                        //     if (newTime == null) return;
+                        //     setState(() {
+                        //       hora = newTime;
+                        //     });
+                        //   },
+                        // ),
+                        const SizedBox(height: 14),
+                        const TextField(
+                          minLines: 6,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            // fillColor: Color.fromARGB(115, 182, 181, 181)
+                            //     .withOpacity(0.3),
+                            filled: true,
+                            border: OutlineInputBorder(),
+                            hintText: 'Adicione uma descrição...',
+                            hintStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        ElevatedButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.amber,
+                            minimumSize:
+                                Size(MediaQuery.of(context).size.width, 60),
+                          ),
+                          onPressed: () {
+                            salvarOcorrencia();
+                          },
+                          child: const SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              'CADASTRAR OCORRÊNCIA',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 18,
                               ),
                             ),
-                            onPressed: () async {
-                              TimeOfDay? newTime = await showTimePicker(
-                                context: context,
-                                initialTime: hora,
-                              );
-                              if (newTime == null) return;
-                              setState(() {
-                                hora = newTime;
-                              });
-                            },
                           ),
-                          const SizedBox(height: 14),
-                          TextFormField(
-                            minLines: 6,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            decoration: InputDecoration(
-                              fillColor: Color.fromARGB(115, 182, 181, 181)
-                                  .withOpacity(0.3),
-                              filled: true,
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: 'Adicione uma descrição...',
-                              hintStyle: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                          ElevatedButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.amber,
-                              minimumSize:
-                                  Size(MediaQuery.of(context).size.width, 60),
-                            ),
-                            onPressed: () {},
-                            child: const SizedBox(
-                              width: double.infinity,
-                              child: Text(
-                                'CADASTRAR OCORRÊNCIA',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ],
     );
+  }
+
+  void salvarOcorrencia() {
+    var data = data_controler.text.split('/');
+    var hora = hora_controler.text.split(':');
+
+    print(data);
+    print(hora);
+
+    DateTime timestamp = DateTime(
+      int.parse(data[2]),
+      int.parse(data[1]),
+      int.parse(data[0]),
+      int.parse(hora[0]),
+      int.parse(hora[1]),
+    );
+
+    print(timestamp);
   }
 }

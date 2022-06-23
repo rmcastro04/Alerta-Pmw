@@ -4,9 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../widgets/custom_drawer.dart';
 import 'cadastro_ocorrencia.dart';
+
+import 'dart:async';
 
 class PrinciapalPage extends StatefulWidget {
   const PrinciapalPage({Key? key}) : super(key: key);
@@ -26,7 +29,7 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
   final _pageController = PageController();
   final mensagem = Get.put(MensagemFloat());
 
-  final makersTemp = Set<Marker>();
+  final makersTemp = <Marker>{};
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,9 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
                 ? IconButton(
                     onPressed: () {
                       setState(() => telaAddOcorrencia = !telaAddOcorrencia);
-                      mensagem.recolherMensagem();
+                      mensagem.recolherMensagem(context);
+                      mostrarFloatButton = false;
+                      makersTemp.clear();
                     },
                     icon: const Icon(Icons.arrow_back_sharp))
                 : null,
@@ -82,16 +87,15 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
               myLocationEnabled: true,
               markers: !telaAddOcorrencia ? controller.makers : makersTemp,
               onLongPress: controller.saveMakerMap,
-              onTap: (e) {
+              onTap: (e) async {
                 if (telaAddOcorrencia) {
                   Marker ocorrencia = Marker(
                     markerId: const MarkerId('ocorrencia'),
                     infoWindow: const InfoWindow(title: 'Local da Ocorrencia'),
-                    /*icon: await BitmapDescriptor.fromAssetImage(
-                        ImageConfiguration(),
-                    'assets/images/alerta_incial.png'),*/
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueRed),
+                    icon: await BitmapDescriptor.fromAssetImage(
+                        ImageConfiguration(), 'assets/images/makers/posicao_inicial_120px.png'),
+                    // icon: BitmapDescriptor.defaultMarkerWithHue(
+                    //     BitmapDescriptor.hueRed),
                     position: e,
                   );
 
@@ -108,12 +112,22 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
           floatingActionButton: mostrarFloatButton && telaAddOcorrencia
               ? FloatingActionButton.extended(
                   onPressed: () {
+                      mensagem.recolherMensagem(context);
+                    //mostrarFloatButton = false;
+                    // mensagem.recolherMensagem();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const CadastrarCorrenciaPage(),
                       ),
                     );
+
+                    // showMaterialModalBottomSheet(
+                    //   context: context,
+                    //   builder: (context) => Container(
+                    //   ),
+                    //   elevation: 50.0
+                    // );
                   },
                   label: const Text('Confirmar'),
                   icon: const Icon(Icons.thumb_up),
