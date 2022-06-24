@@ -11,5 +11,5 @@ class AlertaModel {
   DateTime data_ocorrencia;
 
   AlertaModel(this.descricao, this.titiulo, this.valido, this.posicao,
-      this.tipo_ocorrencia, this.data_ocorrencia);
+      this.tipo_ocorrencia , this.data_ocorrencia);
 }
