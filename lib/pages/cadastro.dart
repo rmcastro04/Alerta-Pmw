@@ -14,9 +14,11 @@ class CadastroPage extends StatefulWidget {
   State<CadastroPage> createState() => _CadastroPageState();
 }
 
+/////////////////////
 class _CadastroPageState extends State<CadastroPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailCadastroController = TextEditingController();
+  final TextEditingController nomeController = TextEditingController();
   final TextEditingController senhaController1 = TextEditingController();
   final TextEditingController senhaController2 = TextEditingController();
   bool _obscurePasswordCadastro = true;
@@ -28,24 +30,14 @@ class _CadastroPageState extends State<CadastroPage> {
     super.dispose();
   }
 
-  registrar() async {
+  signUp() async {
     try {
       await context
           .read<AuthService>()
-          .signIn(emailCadastroController.text, senhaController1.text);
+          .signUp(emailCadastroController.text, senhaController1.text);
     } on AuthException catch (e) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(e.message)));
-    }
-  }
-
-  Future signUp() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailCadastroController.text.trim(),
-          password: senhaController1.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
     }
   }
 
@@ -76,6 +68,7 @@ class _CadastroPageState extends State<CadastroPage> {
                         ),
                         const SizedBox(height: 40),
                         TextFormField(
+                          controller: nomeController,
                           decoration: const InputDecoration(
                             labelText: 'Nome completo do usuário',
                             border: OutlineInputBorder(),

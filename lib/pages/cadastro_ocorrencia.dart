@@ -90,9 +90,7 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-
                         const SizedBox(height: 40),
-
                         TextField(
                           controller: titulo_controler,
                           decoration: const InputDecoration(
@@ -101,7 +99,6 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                               hintText: '(Ex..: Roubaram minha moto)'),
                         ),
                         const SizedBox(height: 14),
-
                         Row(
                           children: <Widget>[
                             const Text(
@@ -143,7 +140,6 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                               );
                             }),
                         const SizedBox(height: 14),
-
                         TextField(
                           controller: data_controler,
                           keyboardType: TextInputType.number,
@@ -171,42 +167,7 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                             });
                           },
                         ),
-                        // ElevatedButton.icon(
-                        //   style: TextButton.styleFrom(
-                        //     backgroundColor: Colors.white70,
-                        //     minimumSize:
-                        //         Size(MediaQuery.of(context).size.width, 60),
-                        //   ),
-                        //   icon: const Icon(
-                        //     Icons.date_range,
-                        //     color: Colors.black,
-                        //   ),
-                        //   label: const SizedBox(
-                        //     width: double.infinity,
-                        //     child: Text(
-                        //       'Selecione a data da ocorrência',
-                        //       style: TextStyle(
-                        //         color: Colors.black,
-                        //         fontWeight: FontWeight.w800,
-                        //         fontSize: 18,
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   onPressed: () async {
-                        //     DateTime? newDate = await showDatePicker(
-                        //       context: context,
-                        //       initialDate: data,
-                        //       firstDate: DateTime(2021),
-                        //       lastDate: DateTime(2023),
-                        //     );
-                        //     if (newDate == null) return;
-                        //     setState(() {
-                        //       data = newDate;
-                        //     });
-                        //   },
-                        // ),
                         const SizedBox(height: 14),
-
                         TextField(
                           controller: hora_controler,
                           keyboardType: TextInputType.number,
@@ -232,39 +193,6 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                             });
                           },
                         ),
-                        //Text('$hora'), Mostrar horas!!!
-                        // ElevatedButton.icon(
-                        //   style: TextButton.styleFrom(
-                        //     backgroundColor: Colors.white70,
-                        //     minimumSize:
-                        //         Size(MediaQuery.of(context).size.width, 60),
-                        //   ),
-                        //   icon: const Icon(
-                        //     Icons.av_timer_rounded,
-                        //     color: Colors.black,
-                        //   ),
-                        //   label: const SizedBox(
-                        //     width: double.infinity,
-                        //     child: Text(
-                        //       'Selecione a data da ocorrência',
-                        //       style: TextStyle(
-                        //         color: Colors.black,
-                        //         fontWeight: FontWeight.w800,
-                        //         fontSize: 18,
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   onPressed: () async {
-                        //     TimeOfDay? newTime = await showTimePicker(
-                        //       context: context,
-                        //       initialTime: hora,
-                        //     );
-                        //     if (newTime == null) return;
-                        //     setState(() {
-                        //       hora = newTime;
-                        //     });
-                        //   },
-                        // ),
                         const SizedBox(height: 14),
                         TextField(
                           minLines: 6,
@@ -272,8 +200,6 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                           maxLines: null,
                           controller: descricao_controler,
                           decoration: const InputDecoration(
-                            // fillColor: Color.fromARGB(115, 182, 181, 181)
-                            //     .withOpacity(0.3),
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: 'Adicione uma descrição...',
@@ -332,8 +258,12 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
       int.parse(hora[1]),
     );
 
-    controller.saveMakerMap(widget.posicao_nova_ocorrencia,
-        titulo_controler.text, timestamp, descricao_controler.text, tipo_ocorrencia!);
+    controller.saveMakerMap(
+        widget.posicao_nova_ocorrencia,
+        titulo_controler.text,
+        timestamp,
+        descricao_controler.text,
+        tipo_ocorrencia!);
 
     Navigator.push(
       context,

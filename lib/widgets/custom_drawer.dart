@@ -41,13 +41,6 @@ class CustomDrawer extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          const Text(
-                            "Olá,",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           GestureDetector(
                             child: const Text(
                               "Sair",
@@ -73,22 +66,25 @@ class CustomDrawer extends StatelessWidget {
                 title: const Text('Adicionar ocorrência'),
                 onTap: () {
                   mudarTela(context);
-
-
-
-                  /*Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const PrinciapalPage();
-                      },
-                    ),
-                  );*/
-
                   Navigator.of(context).pop();
-
-                  /*controller.watchPosicao();*/
-                  /*print("${controller.latitude.value}, ${controller.longitude.value}");*/
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.archive),
+                title: const Text('Minhas ocorrência'),
+                onTap: () {
+                  mudarTela(context);
+                  Navigator.of(context).pop();
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.filter_alt),
+                title: const Text('Filtrar ocorrência'),
+                onTap: () {
+                  mudarTela(context);
+                  Navigator.of(context).pop();
                 },
               )
             ],

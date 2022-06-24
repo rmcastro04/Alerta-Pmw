@@ -29,7 +29,7 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
-  registar(String email, String senha) async {
+  signUp(String email, String senha) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: senha);
       _getUser();
@@ -48,7 +48,7 @@ class AuthService extends ChangeNotifier {
       _getUser();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password' || e.code != 'email-already-in-use') {
-        throw AuthException('E-mail ou senha incorretaaa');
+        throw AuthException('E-mail ou senha incorreta');
       }
     }
   }
