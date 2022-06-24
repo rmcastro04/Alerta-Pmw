@@ -9,107 +9,61 @@ class AlertaDetalhes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  //
-
-    return Container(
-
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-
+    // Ve se capricha
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        color: Colors.white,
         child: Column(
-
-          children: <Widget>[
-              Row(
-                children: <Widget>[
-                    Text("Ocorrências Detalhadas:", style: TextStyle(fontSize: 20)),
-                  ],
-              ),
-            SizedBox(height: 20,),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             Row(
-              children: <Widget>[
-                Text("Titulo:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              children: [
+                Text(
+                  alerta.titiulo,
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                ),
               ],
             ),
-            SizedBox(height: 5,),
-
+            const SizedBox(height: 14),
             Row(
-              children: <Widget>[
-                Text(alerta.titiulo.toString(),style: TextStyle(fontSize: 17,),),
+              children: [
+                Text(alerta.tipo_ocorrencia == 1 ? 'Furto' : 'Roubo',
+                    style: TextStyle(fontSize: 16)),
               ],
             ),
-
-
-
-            SizedBox(height: 20,),
+            const SizedBox(height: 14),
             Row(
-              children: <Widget>[
-                Text("Tipo:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+              children: [
+                Text(alerta.valido == true ? 'Validado' : 'Não validado',
+                    style: TextStyle(fontSize: 16)),
               ],
             ),
-            SizedBox(height: 5,),
-
+            const SizedBox(height: 14),
             Row(
-              children: <Widget>[
-                Text(alerta.tipo_ocorrencia == 1 ? 'Furto' : 'Assalto' ,style: TextStyle(fontSize: 17,),),
+              children: [
+                Text(formartData(alerta.data_ocorrencia),
+                    style: TextStyle(fontSize: 16)),
               ],
             ),
-
-
-            SizedBox(height: 20,),
-            Row(
-              children: <Widget>[
-                Text("Data:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+            const SizedBox(height: 14),
+            Wrap(
+              direction: Axis.horizontal,
+              children: [
+                Text(alerta.descricao, style: TextStyle(fontSize: 16)),
               ],
             ),
-            SizedBox(height: 5,),
-
-            Row(
-              children: <Widget>[
-                Text(alerta.data_ocorrencia.toString(),style: TextStyle(fontSize: 17,),),
-              ],
-            ),
-
-
-            SizedBox(height: 20,),
-            Row(
-              children: <Widget>[
-                Text("Local:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-              ],
-            ),
-            SizedBox(height: 5,),
-
-            Row(
-              children: <Widget>[
-                Text(alerta.posicao.toString(),style: TextStyle(fontSize: 17,),),
-              ],
-            ),
-
-            SizedBox(height: 20,),
-            Row(
-              children: <Widget>[
-                Text("Descrição:",style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-              ],
-            ),
-            SizedBox(height: 5,),
-
-            Row(
-              children: <Widget>[
-                Text(alerta.descricao.toString(),style: TextStyle(fontSize: 17,),),
-              ],
-            ),
-
-
-            ],
-
-        )
-
-
+            const SizedBox(height: 14),
+          ],
+        ),
       ),
-
-      
-
-
     );
+  }
+
+  String formartData(DateTime data) {
+    String data_hora =
+        "${data.day}/${data.month}/${data.year} ${data.hour}:${data.minute}";
+
+    return data_hora;
   }
 }

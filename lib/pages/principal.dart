@@ -166,7 +166,7 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
         isScrollControlled: true,
         builder: (BuildContext context) {
           return FractionallySizedBox(
-            heightFactor: 0.7,
+            heightFactor: 0.4,
             child: AlertaDetalhes(alerta: alertaModel)
           );
         }
