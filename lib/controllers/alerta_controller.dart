@@ -2,15 +2,22 @@ import 'dart:async';
 
 /*import 'package:cloud_firestore/cloud_firestore.dart';*/
 import 'package:alerta_pmw/database/db.dart';
+import 'package:alerta_pmw/model/alerta_model.dart';
+import 'package:alerta_pmw/widgets/alerta_detalhes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AlertasController extends GetxController {
   final latitude = 0.0.obs;
   final longitude = 0.0.obs;
+
+  //late final BuildContext context;
+
+  late Function? showDetailAlert;
 
   late StreamSubscription<Position> positionStream;
   static const LatLng _position = LatLng(-10.2549636, -48.3331159);
@@ -46,27 +53,77 @@ class AlertasController extends GetxController {
           icon: await iconMakers(alerta),
           // icon: await BitmapDescriptor.fromAssetImage(
           //     ImageConfiguration(), 'assets/images/alerta_nao_validado.png'),
-          onTap: () {}),
+          onTap: () => {showModal(alerta.data())} // showModal(alerta.data()),
+      ),
     );
     update();
   }
 
+  showModal(alerta) {
+    DateTime data_ocorrencia = DateTime.parse(
+        alerta['data_ocorrencia'].toDate().toString());
+    AlertaModel alertaModel = AlertaModel(
+        alerta['descricao'],
+        alerta['ocorrencia'],
+        alerta['valido'],
+        alerta['position'],
+        alerta['tipo_ocorrencia'],
+        data_ocorrencia
+    );
+
+    showDetailAlert!(alertaModel);
+
+    // Get.bottomSheet(
+    //   AlertaDetalhes(),
+    //   barrierColor: Colors.white
+    // );
+    // print('###########################################################################################');
+    // print(alerta);
+
+    // showMaterialModalBottomSheet(
+    //   context: context,
+    //   builder: (context) => Container(),
+    // );
+
+    /* showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.amber,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    ); */
+  }
+
   Future<BitmapDescriptor> iconMakers(alerta) async {
-    if(alerta.get('tipo_ocorrencia') == 1) {
-      if(alerta.get('valido')) {
-        return await BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(), 'assets/images/makers/roubo_Validado_tipo_1.png');
+    if (alerta.get('tipo_ocorrencia') == 1) {
+      if (alerta.get('valido')) {
+        return await BitmapDescriptor.fromAssetImage(ImageConfiguration(),
+            'assets/images/makers/roubo_Validado_tipo_1.png');
       }
-      return await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(), 'assets/images/makers/roubo_naoValidado_tipo_1.png');
-    }
-    else if(alerta.get('tipo_ocorrencia') == 2) {
-      if(alerta.get('valido')) {
-        return await BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(), 'assets/images/makers/roubo_Validado_tipo_2.png');
+      return await BitmapDescriptor.fromAssetImage(ImageConfiguration(),
+          'assets/images/makers/roubo_naoValidado_tipo_1.png');
+    } else if (alerta.get('tipo_ocorrencia') == 2) {
+      if (alerta.get('valido')) {
+        return await BitmapDescriptor.fromAssetImage(ImageConfiguration(),
+            'assets/images/makers/roubo_Validado_tipo_2.png');
       }
-      return await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(), 'assets/images/makers/roubo_naoValidado_tipo_2.png');
+      return await BitmapDescriptor.fromAssetImage(ImageConfiguration(),
+          'assets/images/makers/roubo_naoValidado_tipo_2.png');
     }
 
     return await BitmapDescriptor.fromAssetImage(
@@ -127,17 +184,21 @@ class AlertasController extends GetxController {
     }
   }
 
-  saveMakerMap(LatLng latLng, String titulo, DateTime data_ocorrencia, String descricao, int tipo) async {
+  saveMakerMap(LatLng latLng, String titulo, DateTime data_ocorrencia,
+      String descricao, int tipo) async {
     FirebaseFirestore db = DB.get();
-    db.collection('Alertas').add(
-      {
-        'data_ocorrencia': Timestamp.fromDate(data_ocorrencia),
-        'descricao': descricao,
-        'ocorrencia': titulo,
-        'position': GeoPoint(latLng.latitude, latLng.longitude),
-        'tipo_ocorrencia': tipo,
-        'valido': false
-      }
-    );
+    db.collection('Alertas').add({
+      'data_ocorrencia': Timestamp.fromDate(data_ocorrencia),
+      'descricao': descricao,
+      'ocorrencia': titulo,
+      'position': GeoPoint(latLng.latitude, latLng.longitude),
+      'tipo_ocorrencia': tipo,
+      'valido': false
+    });
+  }
+
+  setContext(Function(AlertaModel e) showDetail) {
+    showDetailAlert = showDetail;
+    //context = cont;
   }
 }

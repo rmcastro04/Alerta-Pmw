@@ -32,16 +32,21 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
     'Roubo': 2,
   };
 
+  late TextEditingController data_controler;
   TextEditingController titulo_controler = TextEditingController();
-  TextEditingController data_controler = TextEditingController();
   TextEditingController hora_controler = TextEditingController();
   TextEditingController descricao_controler = TextEditingController();
   late int? tipo_ocorrencia;
 
-  DateTime data = DateTime(2022, 12, 24);
-  TimeOfDay hora = const TimeOfDay(hour: 10, minute: 30);
-
   final controller = Get.put(AlertasController());
+
+  @override
+  void initState() {
+    super.initState();
+    DateTime dateTime = DateTime.now();
+    data_controler = TextEditingController(
+        text: "${dateTime.day}/${dateTime.month}/${dateTime.year}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,33 +158,21 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                                 filter: {"#": RegExp(r'[0-9]')},
                                 type: MaskAutoCompletionType.lazy),
                           ],
-                          onTap: () async {
-                            DateTime? newDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2021),
-                              lastDate: DateTime(2023),
-                            );
-                            if (newDate == null) return;
-                            setState(() {
-                              data_controler.text =
-                                  "${newDate.day}/${newDate.month}/${newDate.year}";
-                            });
-                          },
                         ),
                         const SizedBox(height: 14),
                         TextField(
                           controller: hora_controler,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.none,
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Digite a hora da ocorrência',
                               suffixIcon: Icon(Icons.av_timer_outlined)),
                           inputFormatters: [
                             MaskTextInputFormatter(
-                                mask: '##:##',
-                                filter: {"#": RegExp(r'[0-9]')},
-                                type: MaskAutoCompletionType.lazy),
+                              mask: '##:##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                              type: MaskAutoCompletionType.lazy,
+                            ),
                           ],
                           onTap: () async {
                             TimeOfDay? newTime = await showTimePicker(
@@ -200,6 +193,8 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                           maxLines: null,
                           controller: descricao_controler,
                           decoration: const InputDecoration(
+                            // fillColor: Color.fromARGB(115, 182, 181, 181)
+                            //     .withOpacity(0.3),
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: 'Adicione uma descrição...',

@@ -49,7 +49,7 @@ dependencies:
   localization: ^2.1.0
   flutter_native_splash: ^2.1.6
   flutter_launcher_icons: ^0.9.3
-  #modal_bottom_sheet: ^2.0.1
+  modal_bottom_sheet: ^2.0.1
   mask_text_input_formatter: ^2.3.0
   scoped_model: ^1.1.0
 
