@@ -31,6 +31,8 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
 
   final makersTemp = <Marker>{};
 
+  late LatLng posicao_nova_ocorrencia;
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AlertasController());
@@ -86,20 +88,20 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
               onMapCreated: controller.onMapCreated,
               myLocationEnabled: true,
               markers: !telaAddOcorrencia ? controller.makers : makersTemp,
-              onLongPress: controller.saveMakerMap,
               onTap: (e) async {
                 if (telaAddOcorrencia) {
                   Marker ocorrencia = Marker(
                     markerId: const MarkerId('ocorrencia'),
                     infoWindow: const InfoWindow(title: 'Local da Ocorrencia'),
                     icon: await BitmapDescriptor.fromAssetImage(
-                        ImageConfiguration(), 'assets/images/makers/posicao_inicial_120px.png'),
+                        ImageConfiguration(), 'assets/images/makers/posicao_inicial.png'),
                     // icon: BitmapDescriptor.defaultMarkerWithHue(
                     //     BitmapDescriptor.hueRed),
                     position: e,
                   );
 
                   setState(() {
+                    posicao_nova_ocorrencia = e;
                     makersTemp.add(ocorrencia);
                     mostrarFloatButton = true;
                   });
@@ -118,7 +120,7 @@ class _PrinciapalPageState extends State<PrinciapalPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const CadastrarCorrenciaPage(),
+                        builder: (context) => CadastrarCorrenciaPage(posicao_nova_ocorrencia: posicao_nova_ocorrencia),
                       ),
                     );
 

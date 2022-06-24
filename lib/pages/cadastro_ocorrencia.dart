@@ -1,10 +1,18 @@
+import 'package:alerta_pmw/controllers/alerta_controller.dart';
+import 'package:alerta_pmw/pages/principal.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CadastrarCorrenciaPage extends StatefulWidget {
-  const CadastrarCorrenciaPage({Key? key}) : super(key: key);
+  const CadastrarCorrenciaPage(
+      {Key? key, required this.posicao_nova_ocorrencia})
+      : super(key: key);
+
+  final LatLng posicao_nova_ocorrencia;
 
   @override
   State<CadastrarCorrenciaPage> createState() => _CadastrarCorrenciaPageState();
@@ -13,18 +21,27 @@ class CadastrarCorrenciaPage extends StatefulWidget {
 class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
   final _formKey = GlobalKey<FormState>();
   final dropValue = ValueNotifier('');
+
   final dropOpcoes = [
-    'Roubo',
     'Furto',
+    'Roubo',
   ];
+
+  static const VALOR_TIPO_OCORRENCIA = {
+    'Furto': 1,
+    'Roubo': 2,
+  };
 
   TextEditingController titulo_controler = TextEditingController();
   TextEditingController data_controler = TextEditingController();
   TextEditingController hora_controler = TextEditingController();
-  TextEditingController descricao = TextEditingController();
+  TextEditingController descricao_controler = TextEditingController();
+  late int? tipo_ocorrencia;
 
   DateTime data = DateTime(2022, 12, 24);
   TimeOfDay hora = const TimeOfDay(hour: 10, minute: 30);
+
+  final controller = Get.put(AlertasController());
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +93,12 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
 
                         const SizedBox(height: 40),
 
-                        const TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Título',
-                            border: OutlineInputBorder(),
-                            hintText: '(Ex..: Roubaram minha moto)'
-                          ),
+                        TextField(
+                          controller: titulo_controler,
+                          decoration: const InputDecoration(
+                              labelText: 'Título',
+                              border: OutlineInputBorder(),
+                              hintText: '(Ex..: Roubaram minha moto)'),
                         ),
                         const SizedBox(height: 14),
 
@@ -111,8 +128,11 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                                 child: DropdownButtonFormField<String>(
                                   isExpanded: true,
                                   value: (value.isEmpty) ? null : value,
-                                  onChanged: (escolha) =>
-                                      dropValue.value = escolha.toString(),
+                                  onChanged: (escolha) => {
+                                    dropValue.value = escolha.toString(),
+                                    tipo_ocorrencia = VALOR_TIPO_OCORRENCIA[
+                                        escolha.toString()],
+                                  },
                                   items: dropOpcoes
                                       .map((op) => DropdownMenuItem(
                                             value: op,
@@ -130,8 +150,7 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Digite a data da ocorrência',
-                              suffixIcon: Icon(Icons.calendar_month)
-                          ),
+                              suffixIcon: Icon(Icons.calendar_month)),
                           inputFormatters: [
                             MaskTextInputFormatter(
                                 mask: '##/##/####',
@@ -147,7 +166,8 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                             );
                             if (newDate == null) return;
                             setState(() {
-                              data_controler.text = "${newDate.day}/${newDate.month}/${newDate.year}";
+                              data_controler.text =
+                                  "${newDate.day}/${newDate.month}/${newDate.year}";
                             });
                           },
                         ),
@@ -193,8 +213,7 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Digite a hora da ocorrência',
-                              suffixIcon: Icon(Icons.av_timer_outlined)
-                          ),
+                              suffixIcon: Icon(Icons.av_timer_outlined)),
                           inputFormatters: [
                             MaskTextInputFormatter(
                                 mask: '##:##',
@@ -208,7 +227,8 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                             );
                             if (newTime == null) return;
                             setState(() {
-                              hora_controler.text = "${newTime.hour}:${newTime.minute}";
+                              hora_controler.text =
+                                  "${newTime.hour}:${newTime.minute}";
                             });
                           },
                         ),
@@ -246,19 +266,19 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
                         //   },
                         // ),
                         const SizedBox(height: 14),
-                        const TextField(
+                        TextField(
                           minLines: 6,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          decoration: InputDecoration(
+                          controller: descricao_controler,
+                          decoration: const InputDecoration(
                             // fillColor: Color.fromARGB(115, 182, 181, 181)
                             //     .withOpacity(0.3),
                             filled: true,
                             border: OutlineInputBorder(),
                             hintText: 'Adicione uma descrição...',
-                            hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16),
+                            hintStyle:
+                                TextStyle(color: Colors.black, fontSize: 16),
                           ),
                         ),
                         const SizedBox(height: 40),
@@ -312,6 +332,14 @@ class _CadastrarCorrenciaPageState extends State<CadastrarCorrenciaPage> {
       int.parse(hora[1]),
     );
 
-    print(timestamp);
+    controller.saveMakerMap(widget.posicao_nova_ocorrencia,
+        titulo_controler.text, timestamp, descricao_controler.text, tipo_ocorrencia!);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PrinciapalPage(),
+      ),
+    );
   }
 }

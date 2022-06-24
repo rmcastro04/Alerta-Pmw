@@ -53,8 +53,20 @@ class AlertasController extends GetxController {
 
   Future<BitmapDescriptor> iconMakers(alerta) async {
     if(alerta.get('tipo_ocorrencia') == 1) {
+      if(alerta.get('valido')) {
+        return await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(), 'assets/images/makers/roubo_Validado_tipo_1.png');
+      }
       return await BitmapDescriptor.fromAssetImage(
           ImageConfiguration(), 'assets/images/makers/roubo_naoValidado_tipo_1.png');
+    }
+    else if(alerta.get('tipo_ocorrencia') == 2) {
+      if(alerta.get('valido')) {
+        return await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(), 'assets/images/makers/roubo_Validado_tipo_2.png');
+      }
+      return await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(), 'assets/images/makers/roubo_naoValidado_tipo_2.png');
     }
 
     return await BitmapDescriptor.fromAssetImage(
@@ -115,9 +127,17 @@ class AlertasController extends GetxController {
     }
   }
 
-  saveMakerMap(LatLng latLng) {
-    print('############################');
-    print(latLng);
-    print('############################');
+  saveMakerMap(LatLng latLng, String titulo, DateTime data_ocorrencia, String descricao, int tipo) async {
+    FirebaseFirestore db = DB.get();
+    db.collection('Alertas').add(
+      {
+        'data_ocorrencia': Timestamp.fromDate(data_ocorrencia),
+        'descricao': descricao,
+        'ocorrencia': titulo,
+        'position': GeoPoint(latLng.latitude, latLng.longitude),
+        'tipo_ocorrencia': tipo,
+        'valido': false
+      }
+    );
   }
 }
